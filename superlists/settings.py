@@ -12,9 +12,26 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+# 2 Scoops 5.4.1, Env Varible Alternative
+import json 
+from django.core.exceptions import ImproperlyConfigured
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# JSON-based secrets module (see 2 Scoops, 5.4.1)
+with open(os.path.join(BASE_DIR, '../etc/secrets.json')) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    '''Get the secret variable or return explicit exception.'''
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = 'Set the {0} environment variable'.format(setting)
+        raise ImproperlyConfigured(error_msg)
+        
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -24,8 +41,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
-    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-    ALLOWED_HOSTS = [os.environ['SITENAME']]
+    SECRET_KEY = get_secret('SECRET_KEY')
+    ALLOWED_HOSTS = get_secret('SITENAME')
+
 else:
     DEBUG = True
     SECRET_KEY = 'insecure-key-for-dev'
