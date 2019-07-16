@@ -25,7 +25,10 @@ try:
     with open(os.path.join(BASE_DIR, '../etc/secrets.json')) as f:
         secrets = json.loads(f.read())
 except:
-    secrets = { 'DJANGO_DEBUG_FALSE': False }
+    secrets = { 
+        'DJANGO_DEBUG_FALSE': False,
+        "SITENAME": "superlists-staging.shirk.dev"
+    }
 
 def get_secret(setting, secrets=secrets):
     '''Get the secret variable or return explicit exception.'''
@@ -145,5 +148,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/public/'
+STATIC_ROOT = '/home/shirtqvu/'+get_secret('SITENAME')+'/public'
