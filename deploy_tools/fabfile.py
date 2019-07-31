@@ -5,7 +5,7 @@ from fabric.api import cd, env, local, run
 REPO_URL = 'https://github.com/wmichaelshirk/python-tdd-book.git'
 
 def deploy():
-    site_folder = f'/home/{env.user}/{env.sitename.replace("."+env.host, "")}'
+    site_folder = f'/home/{env.user}/{env.sitename}'
     run(f'mkdir -p {site_folder}')
     with cd(site_folder):
         _get_latest_source()
@@ -29,7 +29,7 @@ def _update_virtualenv():
 
 def _create_or_update_dotenv():
     append('.env', 'DJANGO_DEBUG_FALSE=y')  
-    append('.env', f'SITENAME={env.sitename}')
+    append('.env', f'SITENAME={env.sitename + "." + env.host}')
     current_contents = run('cat .env')  
     if 'SECRET_KEY' not in current_contents:  
         new_secret = ''.join(random.SystemRandom().choices(  
