@@ -123,4 +123,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/public/'
-#STATIC_ROOT = '/home/shirtqvu/'+os.getenv('SITENAME')+'/public'
+STATIC_ROOT = '/home/shirtqvu/' + os.path.basename(os.getcwd()) + os.getenv('SITENAME') + '/public'
