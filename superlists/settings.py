@@ -12,47 +12,21 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-# 2 Scoops 5.4.1, Env Varible Alternative
-import json 
 from django.core.exceptions import ImproperlyConfigured
-
+from dotenv import load_dotenv
+load_dotenv(verbose=True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# JSON-based secrets module (see 2 Scoops, 5.4.1)
-try:
-    with open(os.path.join(BASE_DIR, '../etc/secrets.json')) as f:
-        secrets = json.loads(f.read())
-except:
-    secrets = { 
-        'DJANGO_DEBUG_FALSE': False,
-        "SITENAME": "superlists-staging.shirk.dev"
-    }
-
-def get_secret(setting, secrets=secrets):
-    '''Get the secret variable or return explicit exception.'''
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = 'Set the {0} environment variable'.format(setting)
-        raise ImproperlyConfigured(error_msg)
-        
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECURITY WARNING: don't run with debug turned on in production!
-if get_secret('DJANGO_DEBUG_FALSE'):
-    DEBUG = get_secret('DEBUG')
-    SECRET_KEY = get_secret('SECRET_KEY')
-    ALLOWED_HOSTS = [get_secret('SITENAME')]
-
-else:
-    DEBUG = True
-    SECRET_KEY = 'insecure-key-for-dev'
-    ALLOWED_HOSTS = []
+DEBUG = os.getenv('DEBUG')
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALLOWED_HOSTS = [os.getenv('SITENAME')] if os.getenv('SITENAME') else []
 
 # SECRET_KEY = 'pu6_g*fw#tle_#xa&$2@&ap57+)6g_u6j*i1cf#ozg-5zvsyy!'
 
@@ -149,4 +123,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/public/'
-STATIC_ROOT = '/home/shirtqvu/'+get_secret('SITENAME')+'/public'
+#STATIC_ROOT = '/home/shirtqvu/'+os.getenv('SITENAME')+'/public'
