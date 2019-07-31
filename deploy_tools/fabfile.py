@@ -13,6 +13,7 @@ def deploy():
         _create_or_update_dotenv()
         _update_static_files()
         _update_database()
+        _restart_application()
 
 def _get_latest_source():
     if exists('.git'):
@@ -42,3 +43,6 @@ def _update_static_files():
 
 def _update_database():
     run(f'~/virtualenv/{env.sitename}/3.7/bin/python manage.py migrate --noinput')  
+
+def _restart_application():
+    run(f'selectorctl --interpreter python --user {env.user} --domain {env.host} --restart-webapp {env.sitename}')

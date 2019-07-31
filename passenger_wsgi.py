@@ -1,0 +1,1 @@
+from superlists.wsgi import application
