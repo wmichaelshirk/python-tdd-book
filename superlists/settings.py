@@ -42,6 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lists',
+    'accounts',
+]
+
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.PasswordlessAuthenticationBackend'
 ]
 
 MIDDLEWARE = [
@@ -124,3 +130,26 @@ USE_TZ = True
 
 STATIC_URL = '/public/'
 STATIC_ROOT = '/home/shirtqvu/' + os.getenv('SITENAME') + '/public'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        },
+    },
+    'root': {'level': 'INFO'},
+}
+
+EMAIL_HOST = 'smtp.shirk.dev'
+EMAIL_HOST_USER = '_mainaccount@shirk.dev'
+EMAIL_HOST_PASSWORD = 'ISM%3#3tC9Le' # os.getenv('EMAIL_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
