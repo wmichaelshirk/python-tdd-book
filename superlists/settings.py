@@ -150,6 +150,6 @@ LOGGING = {
 
 EMAIL_HOST = 'smtp.shirk.dev'
 EMAIL_HOST_USER = '_mainaccount@shirk.dev'
-EMAIL_HOST_PASSWORD = 'ISM%3#3tC9Le' # os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
